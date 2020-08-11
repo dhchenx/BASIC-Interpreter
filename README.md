@@ -7,9 +7,6 @@ The project was developed with Delphi 2005 with Reliable performance.
 ## Objective
 The project is used to provide the foundation of high-level programming languages, that is, as intermediate code.
 
-## Flowchart
-![flowchart](flowchart.jpg)
-
 ## Executable file
 ![example](run_ui.jpg)
 
