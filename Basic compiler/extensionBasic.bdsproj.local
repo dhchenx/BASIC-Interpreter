@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2008-05-01 00:12:13.984.pas,C:\Documents and Settings\chendonghua\My Documents\Borland Studio Projects\Unit43.pas=C:\Documents and Settings\chendonghua\桌面\Basic compiler\Basic.pas</Transaction>
+    <Transaction>2008-05-01 00:12:13.984.dfm,C:\Documents and Settings\chendonghua\My Documents\Borland Studio Projects\Unit43.dfm=C:\Documents and Settings\chendonghua\桌面\Basic compiler\Basic.dfm</Transaction>
+    <Transaction>2008-05-02 13:31:48.406.pas,C:\Documents and Settings\chendonghua\桌面\Basic compiler\Unit1.pas=C:\Documents and Settings\chendonghua\桌面\Basic compiler\output.pas</Transaction>
+    <Transaction>2008-05-02 13:31:48.406.dfm,C:\Documents and Settings\chendonghua\桌面\Basic compiler\Unit1.dfm=C:\Documents and Settings\chendonghua\桌面\Basic compiler\output.dfm</Transaction>
+    <Transaction>2008-05-17 15:34:44.390.pas,F:\算法\Basic compiler\output.pas=</Transaction>
+    <Transaction>2008-05-17 15:34:44.390.dfm,F:\算法\Basic compiler\output.dfm=</Transaction>
+  </Transactions>
+</BorlandProject>
