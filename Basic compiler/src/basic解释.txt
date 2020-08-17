@@ -1,0 +1,309 @@
+var pro:array of string;
+procedure gett(m:tmemo);
+var i,j:integer;
+begin
+    setlength(pro,m.Lines.Count);
+    for i:=0 to length(pro)-1 do
+    begin
+        pro[i]:=m.Lines.Strings[i];
+    end;
+end;
+procedure tr_if();
+ function getco(s:string):string;
+ var i,j:integer;
+ var r:string;
+ begin
+       r:='';
+      for i:=1 to length(s) do
+       if (s[i]=' ') then break;
+      for j:=i+1 to length(s) do
+      if (s[j]=' ') then break
+      else r:=r+s[j];
+      result:=r;
+ end;
+ function getif(s:string):string;
+ var i:integer;
+ var r:string;
+ var r1:string;
+ begin
+     r:='';
+     r1:='';
+     if (length(s)>=7) then begin
+     for i:=1 to 3 do  r:=r+s[i];
+     for i:=length(s)-3 to length(s) do
+        r1:=r1+s[i];
+     end;
+     result:=r+r1;
+ end;
+ function checkelse(i,j:integer):integer;
+ var k:integer;
+ var r:integer;
+ begin
+      r:=-1;
+      for k:=i+1 to j-1 do begin
+          if(pro[k]='else') then  begin
+              r:=k;
+              break;
+          end;
+      end;
+      result:=k;
+ end;
+ var i,j,k:integer;
+var co:string;
+var n,last:integer;
+var b,c:boolean;
+begin
+     n:=length(pro)-1;
+     b:=false;
+     c:=false;
+     repeat
+      for i:=0 to n do  begin
+          if (pro[i]='end if') then
+           for j:=i downto 0 do begin
+             if (getif(pro[j])='if then')then begin
+             last:=i+1;
+              if (checkelse(j,i)<>-1) then
+              begin
+              last:=checkelse(j,i);
+               pro[last]:='ifelse';
+              end;
+                 pro[j]:='iffalse '+getco(pro[j])+ ' '+inttostr(last);
+                 pro[i]:='endif';
+                 b:=true;
+                 break;
+             end;
+             if (b=true) then break;
+          end;
+            if (b=true) then break;
+      end;
+         if (i=n)then c:=true;
+         if (b=false) then c:=true;
+         b:=false;
+     until(c=true);
+end;
+procedure tr_while();
+ function getco(s:string):string;
+ var i,j:integer;
+ var co:string;
+ begin
+     s:=trim(s);
+     co:='';
+     if (length(s)>=7) then
+     begin
+         for i:=1 to length(s) do
+           if (s[i]=' ') then break;
+         for j:=i+1 to length(s) do
+           co:=co+s[j];
+     end;
+     result:=co;
+ end;
+ function getw(s:string):string;
+ var i:integer;
+ var r:string;
+ begin
+     r:='';
+     if (length(s)>=7) then
+     for i:=1 to 6 do
+      r:=r+s[i];
+      result:=r;
+ end;
+ function checkbreak(i,j:integer):integer;
+ var r:integer;
+ var k:integer;
+ begin
+      r:=-1;
+      for k:=i+1 to j-1 do
+      if (pro[k]='break') then r:=k;
+      result:=r;
+ end;
+ var i,j,k:integer;
+var co:string;
+var n,last:integer;
+var b,c:boolean;
+begin
+         n:=length(pro)-1;
+     b:=false;
+     c:=false;
+     repeat
+      for i:=0 to n do  begin
+          if (pro[i]='end while') then
+           for j:=i downto 0 do begin
+             if (getw(pro[j])='while ')then begin
+                 last:=i+1;
+                 if (checkbreak(j,i)<>-1) then
+                 begin
+                     pro[checkbreak(j,i)]:='goto '+inttostr(last);
+                 end;
+                 pro[j]:='iffalse '+getco(pro[j])+ ' '+inttostr(last);
+                 pro[i]:='goto '+inttostr(j);
+                 b:=true;
+                 break;
+             end;
+             if (b=true) then break;
+          end;
+            if (b=true) then break;
+      end;
+         if (i=n)then c:=true;
+         if (b=false) then c:=true;
+         b:=false;
+     until(c=true);
+end;
+procedure tr_do();
+function getco(s:string):string;
+ var i,j:integer;
+ var co:string;
+ begin
+     s:=trim(s);
+     co:='';
+     if (length(s)>=6) then
+     begin
+         for i:=1 to length(s) do
+           if (s[i]=' ') then break;
+         for j:=i+1 to length(s) do
+           co:=co+s[j];
+     end;
+     result:=co;
+ end;
+function getl(s:string):string;
+ var i:integer;
+ var r:string;
+ begin
+     r:='';
+     if (length(s)>=7) then
+     for i:=1 to 4 do
+      r:=r+s[i];
+      result:=r;
+ end;
+ function checkbreak(i,j:integer):integer;
+ var r:integer;
+ var k:integer;
+ begin
+      r:=-1;
+      for k:=i+1 to j-1 do
+      if (pro[k]='break') then r:=k;
+      result:=r;
+ end;
+ var i,j,k:integer;
+var co:string;
+var n,last:integer;
+var b,c:boolean;
+begin
+         n:=length(pro)-1;
+     b:=false;
+     c:=false;
+     repeat
+      for i:=0 to n do  begin
+          if (getl(pro[i])='loop') then
+           for j:=i downto 0 do begin
+             if (pro[j]='do')then begin
+                 last:=j;
+                 if (checkbreak(j,i)<>-1) then
+                 begin
+                     pro[checkbreak(j,i)]:='goto '+inttostr(j+1);
+                 end;
+                 pro[i]:='if '+getco(pro[i])+ ' '+inttostr(last);
+                 pro[j]:='do';
+                 b:=true;
+                 break;
+             end;
+             if (b=true) then break;
+          end;
+            if (b=true) then break;
+      end;
+         if (i=n)then c:=true;
+         if (b=false) then c:=true;
+         b:=false;
+     until(c=true);
+end;
+procedure tr_for();
+ var i,j,k:integer;
+var co:string;
+var n,last:integer;
+var b,c:boolean;
+function checkbreak(i,j:integer):integer;
+ var r:integer;
+ var k:integer;
+ begin
+      r:=-1;
+      for k:=i+1 to j-1 do
+      if (pro[k]='break') then r:=k;
+      result:=r;
+ end;
+function getf(s:string;var first:string;var ends:string;var step:string):string;
+var i,j,k:integer;
+var r:string;
+begin
+     ends:='';
+     first:='';
+     step:='';
+     r:='';
+     if (length(s)>=20)then begin
+     for i:=1 to length(s) do
+       if(s[i]=' ') then break
+       else r:=r+s[i];
+       r:=r+' ';
+     for j:=i+1 to length(s) do
+     if (s[j]=' ') then break
+     else first:=first+s[j];
+     for k:=j+4 to length(s) do
+     if (s[k]=' ') then break
+     else ends:=ends+s[k];
+     if (k=n) then step:='1' else
+     begin
+         for i:=k+6 to length(s) do
+         step:=step+s[i];
+     end;
+     showmessage('first='+first);
+     showmessage('ends='+ends);
+     showmessage('head='+r);
+     end;
+
+     result:=r;
+end;
+procedure gets(s:string;var v:string;var st:string);
+var i,j:integer;
+begin
+     v:='';
+     st:='';
+
+     for i:=1 to length(s) do
+      if (s[i]='=') then
+      break
+      else v:=v+s[i];
+      for j:=i+1 to length(s) do
+        st:=st+s[j];
+      showmessage('v='+v);
+      showmessage('st='+st);
+
+end;
+var first,ends,step:string;
+var v,st:string;
+begin
+     n:=length(pro)-1;
+     b:=false;
+     c:=false;
+     repeat
+      for i:=0 to n do  begin
+          if (pro[i]='next') then
+           for j:=i downto 0 do begin
+             if (getf(pro[j],first,ends,step)='for ')then begin
+                 last:=j;
+                 if (checkbreak(j,i)<>-1) then
+                 begin
+                     pro[checkbreak(j,i)]:='goto '+inttostr(j);
+                 end;
+                 gets(first,v,st);
+                 pro[i]:=v+'='+v+'+'+step+':if '+v+'<='+ends+' '+inttostr(j+1);
+                 pro[j]:=first;
+                 b:=true;
+                 break;
+             end;
+             if (b=true) then break;
+          end;
+            if (b=true) then break;
+      end;
+         if (i=n)then c:=true;
+         if (b=false) then c:=true;
+         b:=false;
+     until(c=true);
+end;

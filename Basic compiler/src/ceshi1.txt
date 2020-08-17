@@ -1,0 +1,607 @@
+unit Unit43;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls,math, XPMan;
+
+type
+  TForm43 = class(TForm)
+    tt: TMemo;
+    XPManifest1: TXPManifest;
+    GroupBox1: TGroupBox;
+    b7: TButton;
+    b8: TButton;
+    b9: TButton;
+    b4: TButton;
+    jia: TButton;
+    b5: TButton;
+    b6: TButton;
+    jian: TButton;
+    b1: TButton;
+    b2: TButton;
+    b3: TButton;
+    chen: TButton;
+    bj: TButton;
+    b0: TButton;
+    bd: TButton;
+    chu: TButton;
+    bs: TButton;
+    by: TButton;
+    bm: TButton;
+    dou: TButton;
+    equal: TButton;
+    cls: TButton;
+    back: TButton;
+    dleft: TButton;
+    dright: TButton;
+    res: TButton;
+    bright: TButton;
+    bleft: TButton;
+    ask: TButton;
+    ComboBox1: TComboBox;
+    Label1: TLabel;
+    ListBox1: TListBox;
+    Label2: TLabel;
+    procedure ComboBox1Change(Sender: TObject);
+    procedure equalClick(Sender: TObject);
+    procedure clsClick(Sender: TObject);
+    procedure backClick(Sender: TObject);
+    procedure askClick(Sender: TObject);
+    procedure bleftClick(Sender: TObject);
+    procedure brightClick(Sender: TObject);
+    procedure douClick(Sender: TObject);
+    procedure bdClick(Sender: TObject);
+    procedure b0Click(Sender: TObject);
+    procedure bjClick(Sender: TObject);
+    procedure resClick(Sender: TObject);
+    procedure bmClick(Sender: TObject);
+    procedure byClick(Sender: TObject);
+    procedure bsClick(Sender: TObject);
+    procedure dleftClick(Sender: TObject);
+    procedure drightClick(Sender: TObject);
+    procedure chuClick(Sender: TObject);
+    procedure chenClick(Sender: TObject);
+    procedure jianClick(Sender: TObject);
+    procedure jiaClick(Sender: TObject);
+    procedure b9Click(Sender: TObject);
+    procedure b8Click(Sender: TObject);
+    procedure b7Click(Sender: TObject);
+    procedure b6Click(Sender: TObject);
+    procedure b5Click(Sender: TObject);
+    procedure b4Click(Sender: TObject);
+    procedure b3Click(Sender: TObject);
+    procedure b2Click(Sender: TObject);
+    procedure b1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form43: TForm43;
+
+implementation
+
+{$R *.dfm}
+function fen(s:string):string;forward;
+function com(s:string;start:integer;last:integer):string;
+var i:integer;        //提取字符
+var ss:string;
+begin
+     ss:='';
+     if (start<=last)and(last<=length(s)) then
+     begin
+         for i:=start to last do
+         ss:=ss+s[i];
+     end else showmessage('下标溢出');
+     result:=ss;
+end;
+procedure huo(s:string;var a:string;var b:string);
+var i,j:integer;
+var k:integer;
+begin
+    a:='';b:='';
+    for i:=1 to length(s) do
+     if (s[i]='{')then k:=i;
+     for i:=k+1 to length(s) do
+      if (s[i]<>',') then a:=a+s[i]
+      else begin k:=i;break;end;
+      for i:=k+1 to length(s) do
+       if (s[i]<>'}') then b:=b+s[i]
+       else break;
+end;
+function hanshu(s:string):string;
+var a,a2:extended;
+var s1,s2:string;
+var r:extended;
+var n:integer;
+var b:boolean;
+var d:boolean;
+var m,n1:string;
+begin
+    n:=length(s);
+    s2:=s;
+    if n>4 then
+    begin
+        s1:=com(s,1,4);
+        s2:=com(s,5,n);
+        if s2[1]='M' then s2[1]:='-' ;
+        b:=trystrtofloat(s2,a);
+        d:=false;
+        if b=true then  begin
+        a:=strtofloat(s2);
+        if s1='ASin' then begin r:=arcsin(a); d:=true end;
+        if s1='ACos' then begin r:=arccos(a); d:=true end;
+        if s1='Atan' then begin r:=arctan(a); d:=true end;
+        if s1='SinH' then begin r:=sinh(a);  d:=true end;
+        if s1='CosH' then begin r:=cosh(a);  d:=true end;
+        if s1='TanH' then begin r:=tanh(a);  d:=true end;
+        if s1='Coth' then begin r:=coth(a) ; d:=true end;
+        if s1='Floo' then begin r:=floor(a);  d:=true end;
+        if s1='Sqrt' then begin r:=sqrt(a);  d:=true end;
+        if s1='Rand' then begin r:=random(round(a));d:=true end;
+         if s1='Ceil' then begin r:=ceil(a);  d:=true end;
+            if d=true then
+            begin
+            s2:=floattostr(r);
+            if s2[1]='-' then s2[1]:='M';
+            result:=s2;
+            exit;
+            end;
+        end;
+    end;
+    ////////////////////////////////////
+  if n>3 then
+    begin
+        s1:=com(s,1,3); {将其分开为函数名和函数值}
+        s2:=com(s,4,n);
+        /////
+
+           if (s1='Min') then begin
+              huo(s2,m,n1);;
+              result:=floattostr(min(strtofloat(m),strtofloat(n1)));
+           end;
+           if (s1='Max')then begin
+               huo(s2,m,n1);
+               result:=floattostr(max(strtofloat(m),strtofloat(n1)));
+           end;
+           if (s1='Hyt') then begin
+              huo(s2,m,n1);
+              result:=floattostr(hypot(strtofloat(m),strtofloat(n1)));
+           end;
+           if (s1='X10')then begin
+             huo(s2,m,n1);
+              result:=floattostr(power(strtofloat(m),strtofloat(n1)));
+           end;
+           if (s1='LgN')then begin
+               huo(s2,m,n1);
+               result:=floattostr(Logn(strtofloat(m),strtofloat(n1)));
+           end;
+        ///
+        if s2[1]='M' then s2[1]:='-' ;  {处理符号}
+        b:=trystrtofloat(s2,a);
+      if b=true then
+       if (s1='Sin') or(s1='Cos')or (s1='Tan')or(s1='Log') or(s1='Sec')or(s1='Csc')or(s1='Lg2')or(s1='Lne')or(s1='Int')or(s1='Cot') or (s1='Dao') or (s1='Fan')or (s1='ABS') then
+         begin
+         a:=strtofloat(s2);
+           if s1='Sin' then r:=sin(a)
+           else if s1='Cos' then r:=cos(a)
+           else  if s1='Tan' then r:=sin(a)/cos(a)
+           else if s1='Log' then r:=log10(a)
+           else if s1='Sec' then r:=sec(a)
+           ELSE if s1='Csc' then r:=csc(a)
+           else if s1='Log' then r:=log2(a)
+           else if s1='Lne' then r:=lnxp1(a)
+           else if s1='Cot' then r:=cot(a)
+           else if s1='Int' then r:=round(a)
+           else if s1='Fac' then r:=frac(a)
+           else if s1='Exp' then r:=exp(a)
+           else if s1='ABS' then r:=abs(a)
+           else if s1='Dao' then r:=1/a
+           else if s1='Fan' then r:=-a;
+
+            s2:=floattostr(r);
+            if s2[1]='-' then s2[1]:='M' ;
+            result:=s2;
+            exit;
+         end;
+    end;
+    if (n<=2) then result:=s;
+end;
+function checknum(s:string):boolean;
+var k:extended ;
+begin
+     if (s[1]='M') then s[1]:='-';
+
+     if (trystrtofloat(s,k)=false)then result:=false
+     else result:=true;
+end;
+ function yunsuan(a1:string;a2:string;fu:string):string;
+var k1,k2,r:extended;
+var s:string;
+begin
+     if a1[1]='M' then a1[1]:='-';    {处理变形的减号}
+     if a2[1]='M' then a2[1]:='-';
+     k1:=strtofloat(a1);
+     k2:=strtofloat(a2);
+     case fu[1] of
+     '+': r:=k1+k2;           //基本四则运算
+     '-': r:=k1-k2;
+     '*': r:=k1*k2;
+     '/': r:=k1/k2;
+     '\': r:=round(k1) div round(k2);
+     '%': r:=round(k1) mod round(k2);
+
+     end;
+     s:=floattostr(r);           {负数转化为识别的}
+     if s[1]='-' then s[1]:='M';
+     result:=s;
+end;
+function main(s:string):string;
+
+var m:array[1..100]of string;
+var i,j,k:integer;
+var count:integer;
+var mm:string;
+var p:integer;
+var suanshi:string;
+var rr:string;
+begin
+    mm:='';
+    j:=1;
+    if s[1]='-' then s[1]:='M';  //处理减号处理
+    for i:=1 to 100 do m[i]:='';  //把式子分解成数组组织形式
+                               ///
+    for i:=1 to length(s) do
+    begin
+         if (s[i]='*') or (s[i]='-')or(s[i]='+')or(s[i]='/')or(s[i]='\')or(s[i]='%') then
+        begin
+         m[j]:=mm ;j:=j+1;m[j]:=s[i];j:=j+1;mm:=''
+        end
+        else
+        mm :=mm + s[i];
+    end;
+    m[j]:=mm;
+    count:=j; //记录总位数
+    ////////////高级函数
+    for i:=1 to count do
+    begin
+        m[i]:=hanshu(m[i]);
+    end;
+    //乘除高级运算 &加减高级运算 //////////////////////
+    repeat
+    for i:=1 to count do
+   if (m[i]='*')or(m[i]='/')or(m[i]='\') or (m[i]='%') then
+   begin p:=i ;break end
+   else
+   if i=count then p:=0;
+
+       if p<>0 then
+        begin
+             rr:=yunsuan(m[p-1],m[p+1],m[p]);
+             m[p-1]:=rr;
+             for i:=p to count-2 do
+             m[i]:=m[i+2];
+             count:=count-2;
+        end
+        else
+        break;
+   until count=0;
+   //////
+   repeat
+    for i:=1 to count do
+   if (m[i]='+')or(m[i]='-') then
+   begin p:=i ;break end
+   else
+   if i=count then p:=0;
+       if p<>0 then
+        begin
+             rr:=yunsuan(m[p-1],m[p+1],m[p]);
+             m[p-1]:=rr;
+             for i:=p to count-2 do
+             m[i]:=m[i+2];
+             count:=count-2;
+        end
+        else
+        break;
+   until count=0;
+ /////////////////////////////////////////////////////
+      result:=m[1];
+
+end;
+function find(s:string):integer;
+var i,j:integer;
+begin
+    for i:=1 to length(s) do
+    if s[i]=')'  then
+    begin result:=i ;break end
+    else if i=length(s) then result:=0;
+end;
+ function fen(s:string):string;       {括号分解}
+var i,j,p:integer;
+var t:string;
+var rr:string;
+begin
+s:='('+s +')';
+repeat
+    p:=find(s);
+    t:='';
+if p<>0 then
+begin
+    for i:=p-1 downto 1 do
+    begin
+    if s[i]='(' then
+    begin
+     rr:=main(t);
+     s:=stringreplace(s,'('+t+')',rr,[rfreplaceall]);
+     break;       //核心：替换字符
+    end;
+    t:=s[i]+t ;
+    end ;
+end
+until p=0;
+if s[1]='M' then s[1]:='-';
+result:=s;
+end;
+procedure bnum(var f:tform43;b0,b1,b2,b3,b4,b5,b6,b7,b8,b9:boolean);
+begin
+    f.b0.Enabled :=b0;
+    f.b1.Enabled :=b1;
+    f.b2.Enabled :=b2;
+     f.b3.Enabled :=b3;
+     f.b4.Enabled :=b4;
+     f.b5.Enabled :=b5;
+     f.b6.Enabled :=b6;
+     f.b7.Enabled :=b7;
+     f.b8.Enabled :=b8;
+     f.b9.Enabled :=b9;
+
+end;
+procedure boper(var f:tform43;jia,jian,chen,chu,bm,by,bs,bleft,bright,dleft,dright,bd:boolean);
+begin
+    f.jia.Enabled:=jia;
+    f.jian.Enabled:=jian;
+    f.chen.Enabled:=chen;
+    f.chu.Enabled:=chu;
+    f.bm.Enabled:=bm;
+    f.by.Enabled:=by;
+    f.bs.Enabled:=bs;
+    f.bleft.Enabled:=bleft;
+    f.bright.Enabled:=bright;
+    f.dleft.Enabled:=dleft;
+    f.dright.Enabled:=dright;
+    f.bd.Enabled:=bd;
+end;
+procedure TForm43.b1Click(Sender: TObject);
+begin
+tt.SelText:='1';
+ bnum(form43,true,true,true,true,true,true,true,true,true,true);
+ boper(form43,true,true,true,true,true,true,true,false,true,false,true,true);
+ end;
+
+procedure TForm43.b2Click(Sender: TObject);
+begin
+tt.SelText:='2';
+ bnum(form43,true,true,true,true,true,true,true,true,true,true);
+ boper(form43,true,true,true,true,true,true,true,false,true,false,true,true);
+end;
+
+procedure TForm43.b3Click(Sender: TObject);
+begin
+tt.SelText:='3';
+ bnum(form43,true,true,true,true,true,true,true,true,true,true);
+ boper(form43,true,true,true,true,true,true,true,false,true,false,true,true);
+
+end;
+
+procedure TForm43.b4Click(Sender: TObject);
+begin
+tt.SelText:='4';
+ bnum(form43,true,true,true,true,true,true,true,true,true,true);
+ boper(form43,true,true,true,true,true,true,true,false,true,false,true,true);
+
+end;
+
+procedure TForm43.b5Click(Sender: TObject);
+begin
+tt.SelText:='5';
+ bnum(form43,true,true,true,true,true,true,true,true,true,true);
+ boper(form43,true,true,true,true,true,true,true,false,true,false,true,true);
+
+end;
+
+procedure TForm43.b6Click(Sender: TObject);
+begin
+tt.SelText:='6';
+ bnum(form43,true,true,true,true,true,true,true,true,true,true);
+ boper(form43,true,true,true,true,true,true,true,false,true,false,true,true);
+
+end;
+
+procedure TForm43.b7Click(Sender: TObject);
+begin
+tt.SelText:='7';
+ bnum(form43,true,true,true,true,true,true,true,true,true,true);
+ boper(form43,true,true,true,true,true,true,true,false,true,false,true,true);
+
+end;
+
+procedure TForm43.b8Click(Sender: TObject);
+begin
+tt.SelText:='8';
+ bnum(form43,true,true,true,true,true,true,true,true,true,true);
+ boper(form43,true,true,true,true,true,true,true,false,true,false,true,true);
+
+end;
+
+procedure TForm43.b9Click(Sender: TObject);
+begin
+tt.SelText:='9';
+ bnum(form43,true,true,true,true,true,true,true,true,true,true);
+ boper(form43,true,true,true,true,true,true,true,false,true,false,true,true);
+
+end;
+
+procedure TForm43.jiaClick(Sender: TObject);
+begin
+tt.SelText:='+';
+  bnum(form43,true,true,true,true,true,true,true,true,true,true);
+boper(form43,false,false,false,false,false,false,false,true,false,true,false,false);
+end;
+
+procedure TForm43.jianClick(Sender: TObject);
+begin
+tt.SelText:='-';
+  bnum(form43,true,true,true,true,true,true,true,true,true,true);
+boper(form43,false,false,false,false,false,false,false,true,false,true,false,false);
+end;
+
+procedure TForm43.chenClick(Sender: TObject);
+begin
+tt.SelText:='*';
+  bnum(form43,true,true,true,true,true,true,true,true,true,true);
+boper(form43,false,false,false,false,false,false,false,true,false,true,false,false);
+end;
+
+procedure TForm43.chuClick(Sender: TObject);
+begin
+tt.SelText:='/';
+  bnum(form43,true,true,true,true,true,true,true,true,true,true);
+  boper(form43,false,false,false,false,false,false,false,true,true,true,true,false);
+
+end;
+
+procedure TForm43.drightClick(Sender: TObject);
+begin
+tt.SelText:='}';
+ bnum(form43,false,false,false,false,false,false,false,false,false,false);
+ boper(form43,true,true,true,true,true,true,true,true,true,true,true,false);
+end;
+
+procedure TForm43.dleftClick(Sender: TObject);
+begin
+tt.SelText:='{';
+bnum(form43,true,true,true,true,true,true,true,true,true,true);
+boper(form43,false,false,false,false,false,false,false,false,false,false,false,false);
+
+end;
+
+procedure TForm43.bsClick(Sender: TObject);
+begin
+tt.SelText:='\';
+  bnum(form43,true,true,true,true,true,true,true,true,true,true);
+boper(form43,false,false,false,false,false,false,false,true,false,true,false,false);
+end;
+
+procedure TForm43.byClick(Sender: TObject);
+begin
+tt.SelText:='&';
+  bnum(form43,true,true,true,true,true,true,true,true,true,true);
+boper(form43,false,false,false,false,false,false,false,true,false,true,false,false);
+end;
+
+procedure TForm43.bmClick(Sender: TObject);
+begin
+tt.SelText:='%';
+  bnum(form43,true,true,true,true,true,true,true,true,true,true);
+boper(form43,false,false,false,false,false,false,false,true,false,true,false,false);
+end;
+
+procedure TForm43.resClick(Sender: TObject);
+begin
+tt.SelText:='ANS';
+bnum(form43,false,false,false,false,false,false,false,false,false,false);
+boper(form43,true,true,true,true,true,true,true,false,true,false,true,false);
+
+end;
+
+procedure TForm43.bjClick(Sender: TObject);
+begin
+tt.SelText:='M';
+  bnum(form43,true,true,true,true,true,true,true,true,true,true);
+  boper(form43,false,false,false,false,false,false,false,false,false,false,false,false);
+
+end;
+
+procedure TForm43.b0Click(Sender: TObject);
+begin
+tt.SelText:='0';
+ bnum(form43,true,true,true,true,true,true,true,true,true,true);
+ boper(form43,true,true,true,true,true,true,true,false,true,false,true,true);
+
+end;
+
+procedure TForm43.bdClick(Sender: TObject);
+begin
+tt.SelText:='.';
+bnum(form43,true,true,true,true,true,true,true,true,true,true);
+boper(form43,false,false,false,false,false,false,false,false,false,false,false,false);
+
+end;
+
+procedure TForm43.douClick(Sender: TObject);
+begin
+tt.SelText:=',';
+bnum(form43,true,true,true,true,true,true,true,true,true,true);
+boper(form43,false,false,false,false,false,false,false,false,false,false,false,false);
+
+end;
+
+procedure TForm43.brightClick(Sender: TObject);
+begin
+tt.SelText:=')';
+ bnum(form43,false,false,false,false,false,false,false,false,false,false);
+ boper(form43,true,true,true,true,true,true,true,true,true,true,true,false);
+end;
+
+procedure TForm43.bleftClick(Sender: TObject);
+begin
+tt.SelText:='(';
+bnum(form43,true,true,true,true,true,true,true,true,true,true);
+boper(form43,false,false,false,false,false,false,false,false,false,false,false,false);
+
+end;
+
+procedure TForm43.askClick(Sender: TObject);
+begin
+bnum(form43,true,true,true,true,true,true,true,true,true,true);
+boper(form43,true,true,true,true,true,true,true,true,true,true,true,true);
+end;
+
+procedure TForm43.backClick(Sender: TObject);
+begin
+tt.SelStart:=tt.Selstart-1;
+tt.SelLength:=1;
+tt.SelText:='';
+
+end;
+
+procedure TForm43.clsClick(Sender: TObject);
+begin
+tt.Clear;
+end;
+
+procedure TForm43.equalClick(Sender: TObject);
+var i,j:integer;
+var b:boolean;
+begin
+    for i:=0 to tt.Lines.Count-1 do
+    begin
+     b:=false;
+     for j:=1 to length(tt.Lines.Strings[i]) do
+     if (com(tt.Lines.Strings[i],j,j)='=') then begin b:=true;break;end;
+     if (b<>true) then
+      tt.Lines.Strings[i]:=tt.Lines.Strings[i]+' = '+fen(tt.Lines.Strings[i]);
+
+     end;
+end;
+
+procedure TForm43.ComboBox1Change(Sender: TObject);
+begin
+tt.SelText:=combobox1.Text;
+end;
+
+end.

@@ -1,0 +1,48 @@
+int i=0
+int y=3
+if i<=100 then
+if y<33 then
+y=y+1
+end if
+i=i+1
+end if
+
+if x>2 then
+x=x+1
+else
+x=x-1
+if x>11 then
+y=y-1
+end if
+end if
+
+if x>1 then
+x=x+1
+if y=2 then
+x=x-1
+else
+x=x+1
+end if
+x=x+1
+end if
+
+
+
+
+
+if x>33 then
+if x>1 then
+x=x+1
+if y=2 then
+x=x-1
+else
+x=x+1
+end if
+x=x+1
+if y=2 then
+x=x+1
+end if
+end if
+else
+x=x-1
+end if

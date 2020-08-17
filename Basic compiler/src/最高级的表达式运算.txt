@@ -1,0 +1,298 @@
+unit Unit43;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls,math;
+
+type
+  TForm43 = class(TForm)
+    Edit1: TEdit;
+    Button1: TButton;
+    Edit2: TEdit;
+    Edit3: TEdit;
+    Edit4: TEdit;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form43: TForm43;
+
+implementation
+
+{$R *.dfm}
+
+function com(s:string;start:integer;last:integer):string;
+var i:integer;        //提取字符
+var ss:string;
+begin
+     ss:='';
+     if (start<=last)and(last<=length(s)) then
+     begin
+         for i:=start to last do
+         ss:=ss+s[i];
+     end else showmessage('下标溢出');
+     result:=ss;
+end;
+procedure huo(s:string;var a:string;var b:string);
+var i,j:integer;
+var k:integer;
+begin
+    a:='';b:='';
+    for i:=1 to length(s) do
+     if (s[i]='(')then k:=i;
+     for i:=k+1 to length(s) do
+      if (s[i]<>',') then a:=a+s[i]
+      else begin k:=i;break;end;
+      for i:=k+1 to length(s) do
+       if (s[i]<>')') then b:=b+s[i]
+       else break;
+end;
+function hanshu(s:string):string;
+var a,a2:extended;
+var s1,s2:string;
+var r:extended;
+var n:integer;
+var b:boolean;
+var d:boolean;
+var m,n1:string;
+begin
+    n:=length(s);
+    s2:=s;
+    if n>4 then
+    begin
+        s1:=com(s,1,4);
+        s2:=com(s,5,n);
+        if s2[1]='M' then s2[1]:='-' ;
+        b:=trystrtofloat(s2,a);
+        d:=false;
+        if b=true then
+        a:=strtofloat(s2);
+        begin
+        if s1='ASin' then begin r:=arcsin(a); d:=true end;
+        if s1='ACos' then begin r:=arccos(a); d:=true end;
+        if s1='Atan' then begin r:=arctan(a); d:=true end;
+        if s1='SinH' then begin r:=sinh(a);  d:=true end;
+        if s1='CosH' then begin r:=cosh(a);  d:=true end;
+        if s1='TanH' then begin r:=tanh(a);  d:=true end;
+        if s1='Coth' then begin r:=coth(a) ; d:=true end;
+        if s1='Floo' then begin r:=floor(a);  d:=true end;
+        if s1='Sqrt' then begin r:=sqrt(a);  d:=true end;
+        if s1='Rand' then begin r:=random(round(a));d:=true end;
+         if s1='Ceil' then begin r:=ceil(a);  d:=true end;
+            if d=true then
+            begin
+            s2:=floattostr(r);
+            if s2[1]='-' then s2[1]:='M';
+            result:=s2;
+            exit;
+            end;
+        end;
+    end;
+    ////////////////////////////////////
+  if n>3 then
+    begin
+        s1:=com(s,1,3); {将其分开为函数名和函数值}
+        s2:=com(s,4,n);
+        if s2[1]='M' then s2[1]:='-' ;  {处理符号}
+        b:=trystrtofloat(s2,a);
+        if b=true then
+       if (s1='Sin') or(s1='Cos')or (s1='Tan')or(s1='Log') or(s1='Sec')or(s1='Csc')or(s1='Lg2')or(s1='Lne')or(s1='Int')or(s1='Cot') or (s1='Dao') or (s1='Fan')or (s1='ABS') then
+         begin
+         a:=strtofloat(s2);
+           if s1='Sin' then r:=sin(a)
+           else if s1='Cos' then r:=cos(a)
+           else  if s1='Tan' then r:=sin(a)/cos(a)
+           else if s1='Log' then r:=log10(a)
+           else if s1='Sec' then r:=sec(a)
+           ELSE if s1='Csc' then r:=csc(a)
+           else if s1='Log' then r:=log2(a)
+           else if s1='Lne' then r:=lnxp1(a)
+           else if s1='Cot' then r:=cot(a)
+           else if s1='Int' then r:=round(a)
+           else if s1='Fac' then r:=frac(a)
+           else if s1='Exp' then r:=exp(a)
+           else if s1='ABS' then r:=abs(a)
+           else if s1='Dao' then r:=1/a
+           else if s1='Fan' then r:=-a;
+           if (s1='Min') then begin
+              huo(s1,m,n1);
+              r:=min(strtofloat(m),strtofloat(n1));
+           end;
+           if (s2='Max')then begin
+               huo(s1,m,n1);
+               r:=max(strtofloat(m),strtofloat(n1));
+           end;
+           if (s1='Hyt') then begin
+              r:=hypot(strtofloat(m),strtofloat(n1));
+           end;
+           if (s1='X10')then begin
+              r:=power(strtofloat(m),strtofloat(n1));
+           end;
+           if (s1='LgN')then begin
+              r:=Logn(strtofloat(m),strtofloat(n1));
+           end;
+            s2:=floattostr(r);
+            if s2[1]='-' then s2[1]:='M' ;
+            result:=s2;
+            exit;
+         end
+         else
+         s2:=s;
+    end;
+     result:=s2;
+end;
+function checknum(s:string):boolean;
+var k:extended ;
+begin
+     if (s[1]='M') then s[1]:='-';
+
+     if (trystrtofloat(s,k)=false)then result:=false
+     else result:=true;
+end;
+function yunsuan(a1:string;a2:string;fu:string):string;
+var k1,k2,r:extended;
+var s:string;
+begin
+     if a1[1]='M' then a1[1]:='-';    {处理变形的减号}
+     if a2[1]='M' then a2[1]:='-';
+     if (checknum(a1)=true)and(checknum(a2)=true) then
+     begin
+     k1:=strtofloat(a1);
+     k2:=strtofloat(a2);
+     case fu[1] of
+     '+': r:=k1+k2;           //基本四则运算
+     '-': r:=k1-k2;
+     '*': r:=k1*k2;
+     '/': r:=k1/k2;
+     '\': r:=round(k1) div round(k2);
+     '%': r:=round(k1) mod round(k2);
+     end;
+     s:=floattostr(r);           {负数转化为识别的}
+     if s[1]='-' then s[1]:='M';
+     result:=s;
+     end
+     else
+     begin
+         showmessage('含有不能解析的字符,无法进行运算，该步运算返回值为0');
+         result:='0';
+     end;
+end;
+function main(s:string):string;
+var m:array of string;
+var i,j,k:integer;
+var count:integer;
+var mm:string;
+var p:integer;
+var suanshi:string;
+var rr:string;
+var n:integer;
+begin
+    n:=length(s);
+    setlength(m,n+1);
+    mm:='';
+    j:=1;
+    if s[1]='-' then s[1]:='M';  //处理减号处理
+    for i:=1 to n do m[i]:='';  //把式子分解成数组组织形式                           ///
+    for i:=1 to length(s) do
+    begin
+         if (s[i]='*') or (s[i]='-')or(s[i]='+')or(s[i]='/')or(s[i]='\')or(s[i]='%') then
+         begin
+         m[j]:=mm ;j:=j+1;m[j]:=s[i];j:=j+1;mm:=''
+         end
+         else
+         mm :=mm + s[i];
+    end;
+    m[j]:=mm;
+    count:=j; //记录总位数
+    ////////////高级函数
+    for i:=1 to count do
+    begin
+        m[i]:=hanshu(m[i]);
+    end;
+    //乘除高级运算 &加减高级运算 //////////////////////
+   repeat
+    for i:=1 to count do
+    if (m[i]='*')or(m[i]='/')or(m[i]='\') or (m[i]='%') then
+    begin p:=i ;break end
+    else
+    if i=count then p:=0;
+       if p<>0 then
+        begin
+             rr:=yunsuan(m[p-1],m[p+1],m[p]);
+             m[p-1]:=rr;
+             for i:=p to count-2 do
+             m[i]:=m[i+2];
+             count:=count-2;
+        end
+        else
+        break;
+   until count<=0;
+   //////  加法运算
+   repeat
+    for i:=1 to count do
+   if (m[i]='+')or(m[i]='-') then
+   begin p:=i ;break end
+   else
+   if i=count then p:=0;
+       if p<>0 then
+        begin
+             rr:=yunsuan(m[p-1],m[p+1],m[p]);
+             m[p-1]:=rr;
+             for i:=p to count-2 do
+             m[i]:=m[i+2];
+             count:=count-2;
+        end
+        else
+        break;
+   until count<=0;
+ /////////////////////////////////////////////////////
+   result:=m[1];
+
+end;
+function find(s:string):integer;
+var i,j:integer;
+begin
+    for i:=1 to length(s) do
+    if s[i]=')'  then
+    begin result:=i ;break end
+    else if i=length(s) then result:=0;
+end;
+ function fen(s:string):string;       {括号分解}
+var i,j,p:integer;
+var t:string;
+var rr:string;
+begin
+s:='('+s +')';
+repeat
+    p:=find(s);
+    t:='';
+if p<>0 then
+begin
+    for i:=p-1 downto 1 do
+    begin
+    if s[i]='(' then
+    begin
+     rr:=main(t);
+     s:=stringreplace(s,'('+t+')',rr,[rfreplaceall]);
+     break;       //核心：替换字符
+    end;
+    t:=s[i]+t ;
+    end ;
+end
+until p=0;
+if s[1]='M' then s[1]:='-';
+result:=s;
+end;
+procedure TForm43.Button1Click(Sender: TObject);
+var a,b:string;
+begin
+    edit2.Text:=fen(edit1.Text);
+end;
+
+end.

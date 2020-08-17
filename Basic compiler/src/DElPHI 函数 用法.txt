@@ -1,0 +1,104 @@
+Languages 语言，常用于列举语言种类
+AllocMem(p,sizeof(type))分配内存的一块区域给指针
+AddExitProc(Proc:TProcedure)添加一个退出处理过程
+NewStr(const s:string)分配新的字符串给指定字符串
+Assignstr(var P:pstring;const s:string)重新覆原始值
+AppendStr(var dest:string;constr s:string);添加字符串给原有的字符串
+UpperCase(constr s:string):string大写
+function LowerCase(const S:string):string小写
+CompareStr(constr s1,s2:string):integer比较大写
+CompareMem(p1,p2:pointer;length:integer):boolean比较盏堆
+CompareText(const S1,S2:string):integer比较文本，不区分大小写
+SameText(const S1,S2:string):boolean比较文本；
+Ansiuppercase(constr S:string):string ANSI大写
+AnsiLowerCase(const s:string):string小写
+AnsiCompareText(Const s1,s2:string):integer ANSI比较文本，不区分大小写
+ansisametext(const s1,s2:string):boolean  比较是否相同文本，不区凤大小写
+AnsiCompare(const s1,s2:string):integer;比较是否相同，区分大小写 返回整值：S1>S2 >0;S1<S2 <0 S1=s2 =0
+AnsiStrComp(s1,S2:PChar):integer比较字符的是否相同；区分大小写；返回整数值；
+AnsiStrIComp(S1,S2:pchar)返回比较两个指针的整值
+AnsiStrLcomp(S1,S2:pchar;MaxLen:Cardinal):integer放回两个指针字符串指定的长度
+AnsiStrlower(Str:pchar):pchar 非大写不处理
+AnsiStrUpper(Str:pchar):pchar 非小写不处理
+AnsiLastChar(const S:string):pchar获得最后一个字符
+AnsiStrLastChar(p:pchar):pchar获得指针的最后一个字符
+WideUpperCase(Const S:wideString):wideString把双字节转化为大写
+WideLowerCase(Const S:WideString):WideString双字节转化为小写
+WideCompareStr(constr s1,s2:widstring):integer双字节比较,区分大小写
+WideSameStr(Const S1,S2:WideString):boolean比较双字节,不区分大小写
+WideSameStr(const S1,S2:wideString):boolea比较双字节n
+wideCompareText(Const S1,S2:widestring):integer比较双字节,不区分大小写
+WideSametext(const s1,s2:widestring):boolean
+Trim(const:string)去掉字符两边的空白
+TrimLeft(const s:string):string;overload去掉左边的空白
+TrimRight(const s:string):string去掉字符右边的空白
+QuotedStr(const s:stirng):string添加引号
+AnsiQuotedStr(constr s:string;Quote:Char):string在字符两边添加指定的符号
+AnsiExtractQuotedStr(var Src:pchar;Quote:Char):string还原引号的字符的
+AnsiDequotedStr(const s:string;Aquote:char):string
+IntToStr(value:integer):string整数转换字符
+IsVAlidident(const ident:string):boolean判断是否符合
+IntToHex(value:integer;digits:integer):string;overload整数转化为十六进制
+IntToHex(value:int64):string;overload重载 64位整数转化为十六进制
+IntToHex(value:integer;digits:integer):string;overload
+StrToInt(const s:stirng):integer字符转化为整数
+TryStrToInt(const S:string;out value:integer):boolean尝试转换 ,并在失败后返回指定的符号,数值
+StrToInt64(const s:string):int64 字符转化为整数64位
+StrToInt64Def(const s:string;const Default:int64):int64;字符转换为整数64位并设置缺省值
+TryStrToInt64(const s:string;out value:int64):boolean尝试转换str  到 bool
+StrToBoolean字符转换为布尔值
+TrySTrToBoolean尝试转换为布尔值
+StrToBooleanDef
+BoolToStr(B:boolean;useBoolStrs:boolean=false):string;布尔值转换为字符，并设置转换样式
+LoadStr(Ident:integer):string装入字符；
+FmtLoadStr(Ident:integer;const args:array of const):string格式化指定字符
+FileOpen(const FileName:string;mode:longword):integer
+FileCreate(constr FileName:string):integer;overload
+FileCreate(const FileName:string;Rights:integer):integer
+fileRead(Handle:integer;var Buffer;Count:longWord):integer
+FileWrite(Handle:integer;const Buffer;Count:longword):integer
+FileSeek(Handle,offset,origin:integer):integer
+FileClose(Handle:integer)
+FileAge(constr filename:string):integer;
+fileexists(constgr filename:string):boolean
+directioryexists(const directory:string):boolean
+ForceDirectroies(dir:string):boolean
+FindFirst(constr Path:string;Attr:integer;var F:TSearchRec):integer
+findnext(var f:tsearcherec):integer
+FindClose(var f:tsearchrec)
+FileGetDate(Handle:integer):integer;overload
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

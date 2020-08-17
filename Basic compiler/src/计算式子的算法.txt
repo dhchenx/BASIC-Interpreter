@@ -1,0 +1,181 @@
+'本函数在Microsoft Visual Basic .Net 运行通过，稍微改善后可在VB6上运行？？陈东华 编写 
+Public Function yunsuan(ByVal s As String)
+        Dim m(500) As String'可随意改变数组的上限，这可执行500位的算术
+        Dim i, j As Integer '全局申明
+        Dim add As String
+        Dim count As Integer = 0
+        Dim v As Integer
+        'begin 
+        '执行括号域分离
+        '    再次调用本程序,即递归
+        '==============================================================================
+        Dim ch
+        Do
+            ch = InStr(s, ")") '查找")"以便识别括号内容
+            If ch <> 0 Then
+                For j = ch To 1 Step -1
+                    If Mid(s, j, 1) = "(" Then '找到后在往前识别"("
+                        Dim before As String
+                        before = Mid(s, j + 1, ch - j - 1) '收集括号的内容
+                        Dim after As String
+                        after = "(" & before & ")"
+                        Dim mm As String
+                        mm = yunsuan(before)
+                        s = s.Replace(after, mm) '收集包括括号的内容
+                        Exit For
+                    End If
+                Next
+            Else
+                If ch = 0 Then '当找不到）是退出循环，不会进入死循环
+                    Exit Do
+                End If
+            End If
+        Loop
+        '===============过滤了符号下一处理是式子里没有括号=======================================
+
+        '=========================将字符和运算符号分离==========================================
+
+        For i = 1 To Len(s) '把符号和数字分开呈数组
+            Dim check As String
+            check = Mid(s, i, 1)
+            If check = "*" Or check = "/" Or check = "-" Or check = "+" Then '在四则运算中判断符号
+                If Mid(add, 1, 1) = "M" Then
+                    add = "-" & Mid(add, 2, Len(add) - 1)
+                End If
+                m(count) = add
+                count += 1 '组织数组的项的完整性
+                m(count) = check
+                add = ""
+                check = ""
+                count += 1
+            End If
+            add += check
+            If i = Len(s) Then
+                If Mid(add, 1, 1) = "M" Then
+                    add = "-" & Mid(add, 2, Len(add) - 1)
+                End If
+                m(count) = add '累积数字成数字
+            End If
+
+        Next
+        '============================================================================
+        '==================================最高级运算==================================
+        For i = 0 To count
+            Dim w = ""
+            w = InStr(1, m(i), "^") '^乘方运算
+            If w Then
+                Dim a1 = Val(Mid(m(i), 1, w - 1)) '高级用方括号填写参数，避免和小括号处理冲突
+                Dim a2 = Val(Mid(m(i), w + 1, Len(m(i)) - w))
+                m(i) = Val(a1) ^ Val(a2)
+            End If
+            'lg()对数运算
+            w = InStr(1, m(i), "lg[")
+            If w Then
+                Dim a1 = Val(Mid(m(i), 4, Len(m(i)) - 4))
+                m(i) = Math.Log10(Val(a1)) '下面是常用函数调用
+            End If
+            w = InStr(1, m(i), "sin[")
+            If w Then
+                Dim a1 As Double
+                a1 = Val(Mid(m(i), 5, Len(m(i)) - 5))
+                m(i) = Math.Sin(Val(a1))
+            End If
+            w = InStr(1, m(i), "cos[")
+            If w Then
+                Dim a1 As Double
+                a1 = Val(Mid(m(i), 5, Len(m(i)) - 5))
+                m(i) = Math.Cos(a1)
+            End If
+            w = InStr(1, m(i), "tan[")
+            If w Then
+                Dim a1 As Double
+                a1 = Val(Mid(m(i), 5, Len(m(i)) - 5))
+                m(i) = Math.Tan(a1)
+            End If
+            If m(i) = "pi" Then
+                m(i) = Math.PI
+            End If
+            If m(i) = "e" Then
+                m(i) = Math.E
+            End If
+            w = InStr(1, m(i), "log[")
+            If w Then
+                Dim gh(1) As String
+                gh = Split(Mid(m(i), 5, Len(m(i)) - 5), ",")
+                m(i) = Math.Log10((Val(gh(0))) / Math.Log10(Val(gh(1))))
+            End If
+            w = InStr(1, m(i), "ln[")
+            If w Then
+                Dim a1
+                a1 = Mid(m(i), 4, Len(m(i)) - 4)
+                m(i) = Math.Log(Val(a1))
+            End If
+            w = InStr(1, m(i), "sqrt[")
+            If w Then
+                Dim a1
+                a1 = Mid(m(i), 6, Len(m(i)) - 6)
+                m(i) = Math.Sqrt(Val(a1))
+            End If
+
+        Next
+        '=================================低级运算 四则运算 基本运算===================================
+        '===================================乘除运算==============================不算加减保留
+        Do
+            Dim fu As Integer = 0 '检查是否还有*或/的符号，以便再次调用方法
+            For i = 1 To count
+                If m(i) = "*" Or m(i) = "/" Then
+                    fu = i
+                    Exit For
+                End If
+                If i = count Then
+                    fu = 0 '没有符号是发出信号该下一句
+                End If
+            Next
+            If fu <> 0 Then
+                If m(fu) = "*" Then
+                    m(fu - 1) = Val(m(fu - 1)) * Val(m(fu + 1)) '单目乘法
+
+                End If
+                If m(fu) = "/" Then
+                    m(fu - 1) = Val(m(fu - 1)) / Val(m(fu + 1)) '单目除法
+
+                End If
+                For i = fu To count - 2 '把数组空的部位给后面的数组填充
+                    m(i) = m(i + 2)
+                Next
+                m(i) = ""
+                m(i + 1) = ""
+                count = count - 2 '删除多余的数组
+            Else
+                Exit Do '跳出循环
+            End If
+        Loop
+        '最后把一条只有加减法的算式提供给下一子程序
+        '=====================加减法运算================================子程序
+        Dim n As Integer = 1
+        Do
+            If m(n) = "+" Or m(n) = "-" Then
+                If m(n) = "+" Then
+                    m(n - 1) = Val(m(n - 1)) + Val(m(n + 1)) '执行加法
+                End If
+                If m(n) = "-" Then
+                    m(n - 1) = Val(m(n - 1)) - Val(m(n + 1)) '执行减法
+                End If
+                For i = n To count - 2
+                    m(i) = m(i + 2) '缩减数组长度，便于答案析出
+                Next
+                m(count) = ""
+                m(count - 1) = "" '剪掉后面无用项
+                count = count - 2
+                If m(n) <> "+" And m(n) <> "-" Then '跳出循环
+                    Exit Do '关闭循环 
+                End If
+            Else
+                Exit Do
+            End If
+        Loop
+        If Mid(m(0), 1, 1) = "-" Then
+            m(0) = "M" & Mid(m(0), 2, Len(m(0)) - 1)
+        End If
+        Return m(0) '显示答案返回给调用的程序
+    End Function

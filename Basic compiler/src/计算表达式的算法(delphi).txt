@@ -1,0 +1,270 @@
+unit Unit39;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls,math, XPMan;
+
+type
+  TForm39 = class(TForm)
+    Edit1: TEdit;
+    Edit2: TEdit;
+    Button1: TButton;
+    Label1: TLabel;
+    Label2: TLabel;
+    Button2: TButton;
+    XPManifest1: TXPManifest;
+    ListBox1: TListBox;
+    Label3: TLabel;
+    ListBox2: TListBox;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form39: TForm39;
+
+implementation
+
+{$R *.dfm}
+function com(s:string;start:integer;last:integer):string;
+var i:integer;
+var ss:string;
+begin
+     ss:='';
+     for i:=start to last do
+     ss:=ss+s[i];
+     result:=ss;
+end;
+function hanshu(s:string):string;
+var a,a2:extended;
+var i,j,k:integer;
+var s1,s2:string;
+var biao:string;
+var r:extended;
+var n:integer;
+var b:boolean;
+var d:boolean;
+begin
+    n:=length(s);
+    s2:=s;
+    if n>3 then
+    begin
+        s1:=com(s,1,3); {将其分开为函数名和函数值}
+        s2:=com(s,4,n);
+        if s2[1]='M' then s2[1]:='-' ;  {处理符号}
+        b:=trystrtofloat(s2,a);
+        if b=true then
+       if (s1='sin') or(s1='cos')or (s1='tan')or(s1='log') or(s1='sec')or(s1='csc')or(s1='lg2')or(s1='lne')or(s1='int')or(s1='cot') or (s1='dao') or (s1='fan')or (s1='abs') then
+         begin
+         a:=strtofloat(s2);
+           if s1='sin' then r:=sin(a)
+           else if s1='cos' then r:=cos(a)
+           else  if s1='tan' then r:=sin(a)/cos(a)
+           else if s1='log' then r:=log10(a)
+           else if s1='sec' then r:=sec(a)
+           ELSE if s1='csc' then r:=csc(a)
+           else if s1='lg2' then r:=log2(a)
+           else if s1='lne' then r:=lnxp1(a)
+           else if s1='cot' then r:=cot(a)
+           else if s1='int' then r:=round(a)
+           else if s1='fac' then r:=frac(a)
+           else if s1='exp' then r:=exp(a)
+           else if s1='abs' then r:=abs(a)
+           else if s1='dao' then r:=1/a
+           else if s1='fan' then r:=-a ;
+            s2:=floattostr(r);
+            if s2[1]='-' then s2[1]:='M' ;
+            result:=s2;
+            exit;
+         end
+         else
+         s2:=s;
+
+
+
+    end;
+    if n>4 then
+    begin
+        s1:=com(s,1,4);
+        s2:=com(s,5,n);
+          if s2[1]='M' then s2[1]:='-' ;
+        b:=trystrtofloat(s2,a);
+        d:=false;
+        if b=true then
+        a:=strtofloat(s2);
+        begin
+        if s1='asin' then begin r:=arcsin(a); d:=true end;
+        if s1='acos' then begin r:=arccos(a); d:=true end;
+        if s1='atan' then begin r:=arctan(a); d:=true end;
+        if s1='sinh' then begin r:=sinh(a);  d:=true end;
+        if s1='cosh' then begin r:=cosh(a);  d:=true end;
+        if s1='tanh' then begin r:=tanh(a);  d:=true end;
+        if s1='coth' then begin r:=coth(a) ; d:=true end;
+        if s1='floo' then begin r:=floor(a);  d:=true end;
+        if s1='sqrt' then begin r:=sqrt(a);  d:=true end;
+        if s1='rand' then begin r:=random(round(a));d:=true end;
+        if d=true then
+        begin
+            s2:=floattostr(r);
+            if s2[1]='-' then s2[1]:='M';
+            result:=s2;
+            exit;
+        end
+        else
+         result:=s1+s2;
+         exit;
+        end;
+    end;
+     result:=s2;
+end;
+function yunsuan(a1:string;a2:string;fu:string):string;
+var k1,k2,r:extended;
+var s:string;
+begin
+     if a1[1]='M' then a1[1]:='-';    {处理变形的减号}
+     if a2[1]='M' then a2[1]:='-';
+     k1:=strtofloat(a1);
+     k2:=strtofloat(a2);
+     case fu[1] of
+     '+': r:=k1+k2;           //基本四则运算
+     '-': r:=k1-k2;
+     '*': r:=k1*k2;
+     '/': r:=k1/k2;
+     '\': r:=round(k1) div round(k2);
+     '%': r:=round(k1) mod round(k2);
+
+     end;
+     s:=floattostr(r);           {负数转化为识别的}
+     if s[1]='-' then s[1]:='M';
+     result:=s;
+end;
+
+function main(s:string):string;
+
+var m:array[1..100]of string;
+var i,j,k:integer;
+var count:integer;
+var mm:string;
+var p:integer;
+var suanshi:string;
+var rr:string;
+begin
+    mm:='';
+    j:=1;
+    if s[1]='-' then s[1]:='M';  //处理减号处理
+    for i:=1 to 100 do m[i]:='';  //把式子分解成数组组织形式
+                               ///
+    for i:=1 to length(s) do
+    begin
+         if (s[i]='*') or (s[i]='-')or(s[i]='+')or(s[i]='/')or(s[i]='\')or(s[i]='%') then
+        begin
+         m[j]:=mm ;j:=j+1;m[j]:=s[i];j:=j+1;mm:=''
+        end
+        else
+        mm :=mm + s[i];
+    end;
+    m[j]:=mm;
+    count:=j; //记录总位数
+    ////////////高级函数
+    for i:=1 to count do
+    begin
+        m[i]:=hanshu(m[i]);
+    end;
+    //乘除高级运算 &加减高级运算 //////////////////////
+    repeat
+    for i:=1 to count do
+   if (m[i]='*')or(m[i]='/')or(m[i]='\') or (m[i]='%') then
+   begin p:=i ;break end
+   else
+   if i=count then p:=0;
+
+       if p<>0 then
+        begin
+             rr:=yunsuan(m[p-1],m[p+1],m[p]);
+             m[p-1]:=rr;
+             for i:=p to count-2 do
+             m[i]:=m[i+2];
+             count:=count-2;
+        end
+        else
+        break;
+   until count=0;
+   //////
+   repeat
+    for i:=1 to count do
+   if (m[i]='+')or(m[i]='-') then
+   begin p:=i ;break end
+   else
+   if i=count then p:=0;
+       if p<>0 then
+        begin
+             rr:=yunsuan(m[p-1],m[p+1],m[p]);
+             m[p-1]:=rr;
+             for i:=p to count-2 do
+             m[i]:=m[i+2];
+             count:=count-2;
+        end
+        else
+        break;
+   until count=0;
+ /////////////////////////////////////////////////////
+      result:=m[1];
+
+end;
+function find(s:string):integer;
+var i,j:integer;
+begin
+    for i:=1 to length(s) do
+    if s[i]=')'  then
+    begin result:=i ;break end
+    else if i=length(s) then result:=0;
+end;
+ function fen(s:string):string;       {括号分解}
+var i,j,p:integer;
+var t:string;
+var rr:string;
+begin
+s:='('+s +')';
+repeat
+    p:=find(s);
+    t:='';
+if p<>0 then
+begin
+    for i:=p-1 downto 1 do
+    begin
+    if s[i]='(' then
+    begin
+     rr:=main(t);
+     s:=stringreplace(s,'('+t+')',rr,[rfreplaceall]);
+     break;       //核心：替换字符
+    end;
+    t:=s[i]+t ;
+    end ;
+end
+until p=0;
+if s[1]='M' then s[1]:='-';
+result:=s;
+end;
+procedure TForm39.Button2Click(Sender: TObject);
+var s:string;
+begin
+    s:='本程序是用来计算表达式的程序，算法本作者独创，禁止非研究之用。--陈东华(Domes)!';
+    showmessage(s);
+
+end;
+
+procedure TForm39.Button1Click(Sender: TObject);
+begin
+edit2.Text:=fen(edit1.Text);
+end;
+
+end.

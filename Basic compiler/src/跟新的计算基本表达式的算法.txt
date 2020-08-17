@@ -1,0 +1,116 @@
+function fen(s:string):string;   {总函数}
+var i,j,p:integer;
+var t:string;
+var rr:string;
+function tocalc(s:string):string;  {计算单个括号的算式}
+var m:array[1..100]of string;
+var i,j,k:integer;
+var token,tok:set of char;
+var n,p:integer;
+var temp:string;
+var ch:char;
+function calc(m:string;f:char;n:string):string;  {计算双目运算}
+var a,b,r:extended;
+var rr:string;
+begin
+     r:=0;
+     rr:='Null';
+     if (m[1]='M') then m[1]:='-';
+     if (n[1]='M') then n[1]:='-';
+     a:=strtofloat(m);
+     b:=strtofloat(n);
+     case(f) of
+     '+':r:=a+b;
+     '-':r:=a-b;
+     '*':r:=a*b;
+     '/':r:=a/b;
+     '%':r:=round(a)mod round(b);
+     '\':r:=round(a) div round(b);
+     '<':r:=round(a) shl round(b);
+     '>':r:=round(a) shr round(b);
+     '^':r:=power(a,b);
+     else showmessage('不支持的运算符,返回0!')
+     end;
+         rr:=floattostr(r);
+         if (rr[1]='-') then rr[1]:='M';
+         result:=rr;
+end;
+procedure ln(); {计算单级运算的}
+var i,j:integer;
+var t1,t2:string;
+var ch:char;
+begin
+     i:=1;
+     while(i<k) do begin
+        ch:=m[i][1];
+        if(ch in tok) then begin
+            t1:=calc(m[i-1],m[i][1],m[i+1]);
+            m[i-1]:=t1;
+              for j:=i to k-2 do begin
+                  m[j]:=m[j+2];
+              end;
+              k:=k-2;
+        end else i:=i+1;
+     end;
+end;
+begin
+    {把每一个数字和符号分离并储存在一位数组里}
+     n:=length(s);
+     k:=1;
+     token:=['+','-','*','/','%','\','<','>','^'];
+     temp:='';
+     for i:=1  to n do begin
+     ch:=s[i];
+         if (ch in token) then
+         begin
+             m[k]:=temp;
+             k:=k+1;
+             m[k]:=s[i];
+             k:=k+1;
+             temp:='';
+         end
+         else temp:=temp+s[i];
+     end;
+     m[k]:=temp;
+     /// //结束//
+     {计算每一级的所有运算}
+      tok:=['^'];
+      ln();
+      tok:=['*','/','%','\','<','>'];
+      ln();
+      tok:=['+','-'];
+      ln();
+      result:=m[1];
+      {结束} ///
+end;
+function find(s:string):integer;
+var i,j:integer;
+begin
+    for i:=1 to length(s) do
+    if s[i]=')'  then
+    begin result:=i ;break end
+    else if i=length(s) then result:=0;
+end;
+{正式函数}
+begin
+s:='('+s +')';
+repeat
+    p:=find(s);
+    t:='';
+if p<>0 then
+begin
+    for i:=p-1 downto 1 do
+    begin
+    if s[i]='(' then
+    begin
+     rr:=tocalc(t);
+     s:=stringreplace(s,'('+t+')',rr,[rfreplaceall]);
+     break;       //核心：替换字符
+    end;
+    t:=s[i]+t ;
+    end ;
+end
+until p=0;
+if (s[i]='M') then s[1]:='-';
+  result:=s;
+end;
